@@ -18,8 +18,11 @@
                 :value="old('title', $task_title)"
                 class="w-full"
             />
+            <x-input-error :messages="$errors->get('title')"/>
+
             <x-input-label for="comment" :value="'コメント'"/>
             <x-textarea name="comment" id="comment" rows=12 class="w-full">{{ old('comment', $task_comment) }}</x-textarea>
+            <x-input-error :messages="$errors->get('comment')"/>
 
             <div class="flex justify-end gap-4">
                 <x-secondary-button :href="route('task.showall')">
