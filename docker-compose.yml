@@ -1,0 +1,38 @@
+services:
+  app:
+    container_name: app
+    user: "${UID}:${GID}"
+    build:
+      context: ./example-app
+      target: dev
+    volumes:
+      - ./example-app:/var/www
+      - ./example-app/php_conf/php.ini:/usr/local/etc/php/php.ini
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 8000:80
+      - "5173:5173"
+    volumes:
+      - ./web:/etc/nginx/conf.d
+      - ./example-app:/var/www
+    working_dir: /var/www
+    depends_on:
+      - app
+  db:
+    image: mysql:8
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: db-user
+      MYSQL_PASSWORD: db-pass
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 3306:3306
+volumes:
+  db:
