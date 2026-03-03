@@ -9,6 +9,68 @@
 - MySQL
 - Docker / Docker Compose
 
+## ディレクトリ構成
+
+```
+.
+├── docker-compose.yml        # Docker Compose 設定ファイル（app / nginx / db の3サービス）
+├── readme.md                 # プロジェクトの説明ドキュメント
+├── __learning/               # PHP 学習用ファイル置き場
+│   ├── docker-compose-yml.txt
+│   ├── test.php
+│   └── work1.php
+├── web/                      # Nginx 設定
+│   └── default.conf          # Nginx のバーチャルホスト設定（リバースプロキシ含む）
+└── example-app/              # Laravel アプリケーション本体
+    ├── Dockerfile            # PHP-FPM コンテナのビルド定義
+    ├── artisan               # Laravel CLI エントリポイント
+    ├── composer.json          # PHP 依存パッケージ定義
+    ├── package.json           # Node.js 依存パッケージ定義
+    ├── vite.config.js         # Vite（フロントエンドビルドツール）設定
+    ├── tailwind.config.js     # Tailwind CSS 設定
+    ├── phpunit.xml            # テスト設定
+    ├── app/                   # アプリケーションコア
+    │   ├── Http/
+    │   │   ├── Controllers/   # コントローラー（TaskController 等）
+    │   │   └── Requests/      # フォームリクエスト（バリデーション）
+    │   ├── Models/            # Eloquent モデル（Task, User）
+    │   ├── Providers/         # サービスプロバイダー
+    │   └── View/              # ビューコンポーネント関連
+    ├── bootstrap/             # フレームワーク起動処理
+    ├── config/                # 各種設定ファイル（DB, 認証, キャッシュ等）
+    ├── database/
+    │   ├── factories/         # モデルファクトリー（テストデータ生成）
+    │   ├── migrations/        # DBマイグレーション（テーブル定義）
+    │   └── seeders/           # シーダー（初期データ投入）
+    ├── public/                # 公開ディレクトリ（Webサーバーのドキュメントルート）
+    ├── resources/
+    │   ├── css/               # CSS ソースファイル
+    │   ├── js/                # JavaScript ソースファイル
+    │   └── views/             # Blade テンプレート（画面表示）
+    ├── routes/
+    │   ├── web.php            # Webルーティング定義
+    │   ├── auth.php           # 認証関連ルーティング
+    │   └── console.php        # Artisan コマンド定義
+    ├── storage/               # ログ・キャッシュ・アップロードファイル等
+    └── tests/                 # テストコード
+        ├── Feature/           # 機能テスト
+        └── Unit/              # ユニットテスト
+```
+
+### 各ディレクトリの役割
+
+| ディレクトリ / ファイル | 説明 |
+|---|---|
+| `docker-compose.yml` | `app`（PHP-FPM）、`nginx`（Webサーバー）、`db`（MySQL 8）の3つのサービスを定義 |
+| `__learning/` | PHP の学習・練習用スクリプトを格納するディレクトリ（アプリ本体とは独立） |
+| `web/` | Nginx の設定ファイルを格納。ポート80でLaravelへ、ポート5173でVite開発サーバーへプロキシ |
+| `example-app/` | Laravel プロジェクトのルートディレクトリ。ToDo アプリの全ソースコードが含まれる |
+| `example-app/app/` | MVC の Model・Controller やサービスプロバイダーなどのアプリケーションロジック |
+| `example-app/resources/views/` | Blade テンプレート。タスクの一覧・作成・編集画面などのUI |
+| `example-app/routes/` | URL とコントローラーの対応を定義するルーティングファイル |
+| `example-app/database/migrations/` | テーブル作成・変更のマイグレーションファイル |
+| `example-app/tests/` | PHPUnit / Pest によるテストコード |
+
 ## 前提条件
 
 - Docker および Docker Compose がインストールされていること
