@@ -7,6 +7,9 @@ use App\Models\Task;
 
 class TaskController extends Controller
 {
+    /**
+     * ユーザーが作成したタスクの全件表示
+     */
     public function showall(){
         $task_list = auth()->user()->tasks()->get();
 
@@ -16,11 +19,17 @@ class TaskController extends Controller
         ]);
     }
 
+    /**
+     * タスクの新規作成画面の表示
+     */
     public function create(){
         $page_title = "Create task";
         return view('task-create', ['title'=>$page_title]);
     }
 
+    /**
+     * 新規作成したタスクの保存処理（バリデーション含）
+     */
     public function store(Request $request){
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -32,6 +41,9 @@ class TaskController extends Controller
         return redirect()->route('task.showall')->with('success', "作成成功 タイトル: {$validated['title']} コメント: {$validated['comment']}");
     }
 
+    /**
+     * タスク編集画面の表示
+     */
     public function edit($task_id){
         $task = auth()->user()->tasks()->findOrFail($task_id);
 
@@ -43,6 +55,9 @@ class TaskController extends Controller
         ]);
     }
 
+    /**
+     * 編集したタスクのDBへの保存処理（バリデーション含）
+     */
     public function update(Request $request, $task_id){
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -55,6 +70,9 @@ class TaskController extends Controller
         return redirect()->route('task.showall')->with('success', "編集成功 タイトル: {$validated['title']} コメント: {$validated['comment']}");
     }
 
+    /**
+     * タスク削除のDB処理
+     */
     public function destroy($task_id){
         $task = auth()->user()->tasks()->findOrFail($task_id);
         $task->delete();
