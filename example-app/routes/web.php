@@ -19,15 +19,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tasks/create', [TaskController::class, 'store'])->name('task.store');
 
 
-    # 以降の{task}はTasks.IDを示している（のだけれど命名やばすぎるから変えたい）
     # タスク編集フォームの表示
-    Route::get('tasks/{task}/edit', [TaskController::class, 'edit'])->name('task.edit');
+    Route::get('tasks/{task_id}/edit', [TaskController::class, 'edit'])->name('task.edit');
     # タスクの編集内容をDBへ保存
-    # ここも何で/editにしなかったのか（気持ち悪い）
-    Route::put('tasks/{task}', [TaskController::class, 'update'])->name('task.update');
+    Route::put('tasks/{task_id}/edit', [TaskController::class, 'update'])->name('task.update');
 
     # タスクをDBから削除
-    Route::delete('tasks/{task}/delete', [TaskController::class, 'destroy'])->name('task.destroy');
+    Route::delete('tasks/{task_id}/delete', [TaskController::class, 'destroy'])->name('task.destroy');
 });
 
 
